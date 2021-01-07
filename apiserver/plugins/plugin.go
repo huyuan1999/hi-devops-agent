@@ -7,6 +7,7 @@ import (
 	"github.com/hashicorp/go-plugin"
 	"gopkg.in/ini.v1"
 	"io"
+	"log"
 	"os/exec"
 )
 
@@ -74,10 +75,12 @@ func (p *Plugin) Load(tag string) error {
 		return err
 	}
 
-	raw, err := rpcClient.Dispense("register_plugins")
+	raw, err := rpcClient.Dispense(pl["name"])
 	if err != nil {
 		return err
 	}
+
 	register_plugins := raw.(RegisterPlugins)
-	return register_plugins.Register()
+	log.Println("register_plugins.Register(): ", register_plugins.Register())
+	return nil
 }

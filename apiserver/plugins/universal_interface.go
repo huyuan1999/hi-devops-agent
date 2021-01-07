@@ -12,9 +12,13 @@ type RegisterPlugins interface {
 type RegisterRPC struct{ client *rpc.Client }
 
 func (r *RegisterRPC) Register() error {
-	err := r.client.Call("Plugin.Register", new(interface{}), nil)
+	var e error
+	err := r.client.Call("Plugin.Register", new(interface{}), &e)
 	if err != nil {
 		return err
+	}
+	if e != nil {
+		return e
 	}
 	return nil
 }
