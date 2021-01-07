@@ -21,14 +21,15 @@ type RPCServer struct {
 
 func (rpc *RPCServer) Listen() (*grpc.Server, net.Listener, error) {
 	switch strings.ToUpper(rpc.Protocol) {
-	case "TCP", "UDP":
-		return rpc.listenTU()
+	case "TCP":
+		return rpc.tcp()
+	default:
+		return nil, nil, errors.New("unexpected address type")
 	}
-	return nil, nil, errors.New("there is no match")
 }
 
-func (rpc *RPCServer) listenTU() (*grpc.Server, net.Listener, error) {
-	listen, err := net.Listen(rpc.Protocol, rpc.Address)
+func (rpc *RPCServer) tcp() (*grpc.Server, net.Listener, error) {
+	listen, err := net.Listen("tcp", rpc.Address)
 	if err != nil {
 		return nil, nil, err
 	}
