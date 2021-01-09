@@ -6,7 +6,8 @@ import (
 )
 
 var (
-	CfgPath = ""
+	CfgPath     string
+	PluginInfo  []map[string]string
 )
 
 var (
