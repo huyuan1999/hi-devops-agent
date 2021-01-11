@@ -6,8 +6,7 @@ import (
 )
 
 var (
-	CfgPath     string
-	PluginInfo  []map[string]string
+	ConfigFile string
 )
 
 var (

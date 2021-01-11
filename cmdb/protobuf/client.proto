@@ -1,0 +1,72 @@
+syntax = "proto3";
+
+package client;
+
+// protoc --go_out=plugins=grpc:services/ protobuf/client.proto
+
+option go_package = "../services";
+
+message System {
+    string host_name = 1;
+    string release = 2;
+    string kernel = 3;
+}
+
+message CPU {
+    uint32 number = 1;
+    uint32 core = 2;
+    uint32 sibling = 3;
+    uint32 processor = 4;
+    string model_name = 5;
+}
+
+message Memory {
+    uint64 total = 1;
+    string type = 2;
+    uint32 number = 3; 
+    uint32 slot = 4;
+    string max_size = 5;
+    uint32 free_slot = 6;
+}
+
+message MainBoard {
+    string serial_number = 1;
+    string uuid = 2;
+    string manufacturer = 3;
+    string product_name = 4;
+}
+
+message NICMany {
+    repeated NICOne nic = 1;
+    message NICOne {
+        string name = 1;
+        string mac = 2;
+        repeated string address = 3;
+    }
+}
+
+
+message DiskMany {
+    repeated diskOne disk = 1;
+
+    message diskOne {
+        string name = 1;
+        string serial_number = 2;
+        string product_name = 3;
+        uint64 size = 4;
+        string form_factor = 5;
+    }
+}
+
+message RequestClient {
+
+}
+
+service Client {
+    rpc GetSystem (RequestClient) returns (System);
+    rpc GetCPU (RequestClient) returns (CPU);
+    rpc GetMemory (RequestClient) returns (Memory);
+    rpc GetMainBoard (RequestClient) returns (MainBoard);
+    rpc GetNIC (RequestClient) returns (NICMany);
+    rpc GetDisk (RequestClient) returns (DiskMany);
+}
