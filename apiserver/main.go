@@ -4,7 +4,6 @@ import (
 	"flag"
 	"github.com/huyuan1999/hi-devops-agent/apiserver/config"
 	"github.com/huyuan1999/hi-devops-agent/apiserver/rpc_server"
-	"github.com/huyuan1999/hi-devops-agent/cmdb"
 )
 
 func init() {
@@ -27,7 +26,7 @@ func main() {
 	// 加载组件
 	// 包括 cmdb, 批量命令, webssh, 配置管理, 发布平台 等
 	// cmdb.Register(config.GRPCServer)
-	cmdb.Register(config.GRPCServer)
+	//cmdb.Register(config.GRPCServer)
 
 	if err := config.GRPCServer.Serve(config.GRPCListen); err != nil {
 		panic(err)
