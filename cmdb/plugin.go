@@ -1,4 +1,4 @@
-package main
+package cmdb
 
 import (
 	"github.com/huyuan1999/hi-devops-agent/cmdb/services"
