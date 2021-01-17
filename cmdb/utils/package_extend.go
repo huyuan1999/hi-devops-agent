@@ -33,6 +33,15 @@ func IsFile(path string) bool {
 	return false
 }
 
+func IsContain(items []string, item string) bool {
+	for _, eachItem := range items {
+		if eachItem == item {
+			return true
+		}
+	}
+	return false
+}
+
 func RemoveDuplicate(arr []string) []string {
 	resArr := make([]string, 0)
 	tmpMap := make(map[string]interface{})

@@ -3,15 +3,44 @@ package linux
 import (
 	"github.com/huyuan1999/hi-devops-agent/cmdb/models"
 	"github.com/huyuan1999/hi-devops-agent/cmdb/utils"
+	"io/ioutil"
 	"net"
 )
+
+const virtualPath = "/sys/devices/virtual/net/"
 
 type NIC []struct {
 	models.NIC
 }
 
-func NewNIC() (NIC, error) {
+// 过滤虚拟网卡
+func virtualNet() ([]net.Interface, error) {
+	var virtualNameSlice []string
+	var newInterface []net.Interface
+
 	ifaces, err := net.Interfaces()
+	if err != nil {
+		return nil, err
+	}
+
+	virtual, err := ioutil.ReadDir(virtualPath)
+	if err != nil {
+		return nil, err
+	}
+
+	for _, item := range virtual {
+		virtualNameSlice = append(virtualNameSlice, item.Name())
+	}
+	for _, iface := range ifaces {
+		if !utils.IsContain(virtualNameSlice, iface.Name) {
+			newInterface = append(newInterface, iface)
+		}
+	}
+	return newInterface, nil
+}
+
+func NewNIC() (NIC, error) {
+	ifaces, err := virtualNet()
 	if err != nil {
 		return nil, err
 	}
@@ -21,7 +50,7 @@ func NewNIC() (NIC, error) {
 }
 
 func (n NIC) GetName() {
-	ifaces, err := net.Interfaces()
+	ifaces, err := virtualNet()
 	if err != nil {
 		return
 	}
@@ -31,7 +60,7 @@ func (n NIC) GetName() {
 }
 
 func (n NIC) GetMac() {
-	ifaces, err := net.Interfaces()
+	ifaces, err := virtualNet()
 	if err != nil {
 		return
 	}
@@ -60,7 +89,7 @@ func (n NIC) GetMac() {
 }
 
 func (n NIC) GetAddress() {
-	ifaces, err := net.Interfaces()
+	ifaces, err := virtualNet()
 	if err != nil {
 		return
 	}
