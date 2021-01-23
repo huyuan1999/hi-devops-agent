@@ -10,7 +10,24 @@
 - 基础监控
 - ipmi
 
-init 流程和 start 流程
+```bash
+# 初始化节点
+$ ./apiserver --work-dir=/opt/hi-devops-agent/ init --public-ip=192.168.3.10 --server=http://192.168.3.100:8888
 
+# 以守护进程方式运行 agent
+$ ./apiserver start -d
 
-init --public-ip=127.0.0.1
+# 停止以守护进程方式运行的 agent
+$ ./apiserver stop
+
+# 查看命令帮助
+$ ./apiserver --help
+
+# 查看子命令的命令帮助
+$ ./apiserver init --help
+
+$ ./apiserver start --help
+
+$ ./apiserver stop --help 
+```
+
