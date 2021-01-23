@@ -24,18 +24,26 @@ import (
 	"time"
 )
 
-type ResMsg struct {
-	Success            bool   `json:"success"`
-	OnlyId             string `json:"only_id"`
-	Msg                string `json:"msg"`
+type certificate struct {
 	Country            string `json:"country"`
 	Province           string `json:"province"`
 	Locality           string `json:"locality"`
 	Organization       string `json:"organization"`
 	OrganizationalUnit string `json:"organizational_unit"`
 	CommonName         string `json:"common_name"`
-	TimeZone           string `json:"time_zone"`
-	NtpServer          string `json:"ntp_server"`
+}
+
+type initData struct {
+	OnlyId    string `json:"only_id"`
+	TimeZone  string `json:"time_zone"`
+	NtpServer string `json:"ntp_server"`
+}
+
+type ResMsg struct {
+	Success     bool   `json:"success"`
+	Msg         string `json:"msg"`
+	InitData    *initData
+	Certificate *certificate
 }
 
 type PemResp struct {
@@ -58,17 +66,21 @@ func Md5Sum(s string) string {
 
 func register(c *gin.Context) {
 	msg := &ResMsg{
-		Success:            true,
-		OnlyId:             "8888",
-		Msg:                "",
-		Country:            "CN",
-		Province:           "Beijing",
-		Locality:           "Beijing",
-		Organization:       "test",
-		OrganizationalUnit: "test",
-		CommonName:         "test.com",
-		TimeZone:           "Asia/Shanghai",
-		NtpServer:          "ntp1.aliyun.com",
+		Success: true,
+		Msg:     "",
+		InitData: &initData{
+			OnlyId:    "8888",
+			TimeZone:  "Asia/Shanghai",
+			NtpServer: "ntp1.aliyun.com",
+		},
+		Certificate: &certificate{
+			Country:            "CN",
+			Province:           "Beijing",
+			Locality:           "Beijing",
+			Organization:       "test",
+			OrganizationalUnit: "test",
+			CommonName:         "test.com",
+		},
 	}
 
 	body, _ := ioutil.ReadAll(c.Request.Body)
@@ -90,6 +102,10 @@ func sign(c *gin.Context) {
 
 	if Md5Sum(p.Csr) != p.CsrMd5sum {
 		log.Println("MD5 码验证失败, csr 无效")
+		c.JSON(http.StatusOK, gin.H{
+			"success": false,
+			"msg":     "MD5 码验证失败, csr 无效",
+		})
 		return
 	}
 
