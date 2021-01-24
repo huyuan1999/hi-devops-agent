@@ -57,6 +57,14 @@ func (rpc *RPCServer) tcp(creds credentials.TransportCredentials) (*grpc.Server,
 		return nil, nil, errors.Wrap(err, error_type.ListenerError)
 	}
 
-	server := grpc.NewServer(grpc.Creds(creds))
+	// 设置服务器端启用证书双向验证
+	// 设置最大接收和发送大小为 115343360(110M)
+	opts := []grpc.ServerOption{
+		grpc.MaxRecvMsgSize(115343360),
+		grpc.MaxSendMsgSize(115343360),
+		grpc.Creds(creds),
+	}
+
+	server := grpc.NewServer(opts...)
 	return server, listen, nil
 }
