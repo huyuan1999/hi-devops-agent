@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+// protoc --go_out=plugins=grpc:services/ protobuf/*
+
+package file;
+
+option go_package = "../services";
+
+message UploadReq {
+    // 完整文件的 md5 码
+    string FileMd5sum = 1;
+    // 上传之后存储的路径和文件名
+    string Name = 3;
+    // 文件权限
+    uint32 Permission = 4;
+    // 是否使用分段上传
+    bool Subsection = 6;
+    // 和分段上传配合使用, 表示是否是分段的第一段
+    bool Start = 7;
+    // 和分段上传配合使用, 表示是否是分段的最后一段
+    bool End = 8;
+    // 文件内容
+    bytes body = 9;
+    // 如果文件已经存在, 执行的操作, 跳过(false)或者替换(true)
+    bool replace = 10;
+}
+
+message Response {
+    bool Success = 1;
+    string Msg = 2;
+}
+
+service Distribute {
+    rpc Upload (UploadReq) returns (Response);
+}

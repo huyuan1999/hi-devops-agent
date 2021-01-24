@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+// protoc --go_out=plugins=grpc:services/ protobuf/*
+
+package exec_command;
+
+option go_package = "../services";
+
+message ShellResp {
+   int32 Code = 1;
+   uint32 Pid =  2;
+   string Stdout = 3;
+   string Stderr = 4;
+}
+
+message OutputResp {
+    string Out = 1;
+}
+
+message Command {
+    string Cmd = 1;
+    repeated string Args  = 2;
+}
+
+service Exec {
+    rpc Shell (Command) returns (ShellResp);
+    rpc Output (Command) returns (OutputResp);
+}
