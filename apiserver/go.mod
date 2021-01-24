@@ -8,6 +8,7 @@ require (
 	github.com/go-ole/go-ole v1.2.5 // indirect
 	github.com/golang/protobuf v1.4.3
 	github.com/huyuan1999/hi-devops-agent/cmdb v0.0.0-20210111080328-e9247570bdfe
+	github.com/huyuan1999/hi-devops-agent/distribute v0.0.0-20210124072620-3150c779efed // indirect
 	github.com/kardianos/osext v0.0.0-20190222173326-2bc1f35cddc0 // indirect
 	github.com/pkg/errors v0.9.1
 	github.com/robfig/cron/v3 v3.0.0
@@ -19,8 +20,11 @@ require (
 	golang.org/x/sys v0.0.0-20210113000019-eaf3bda374d2 // indirect
 	golang.org/x/text v0.3.5 // indirect
 	google.golang.org/genproto v0.0.0-20210111234610-22ae2b108f89 // indirect
-	google.golang.org/grpc v1.34.1
+	google.golang.org/grpc v1.35.0
 	google.golang.org/protobuf v1.25.0
 )
 
-replace github.com/huyuan1999/hi-devops-agent/cmdb v0.0.0-20210111080328-e9247570bdfe => ../cmdb
+replace (
+    github.com/huyuan1999/hi-devops-agent/cmdb v0.0.0-20210111080328-e9247570bdfe => ../cmdb
+    github.com/huyuan1999/hi-devops-agent/distribute => ../distribute
+)

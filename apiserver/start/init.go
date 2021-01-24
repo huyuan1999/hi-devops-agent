@@ -3,6 +3,7 @@ package start
 import (
 	"github.com/huyuan1999/hi-devops-agent/apiserver/utils"
 	"github.com/huyuan1999/hi-devops-agent/cmdb"
+	"github.com/huyuan1999/hi-devops-agent/distribute"
 	"github.com/sirupsen/logrus"
 	"github.com/urfave/cli/v2"
 )
@@ -63,6 +64,7 @@ func start(context *cli.Context) {
 
 	// 加载插件
 	cmdb.Register(server)
+	distribute.Register(server)
 
 	if err = server.Serve(listener); err != nil {
 		utils.FatalError(err)
